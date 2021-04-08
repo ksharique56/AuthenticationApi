@@ -44,7 +44,7 @@ def profile_update_view(request):
     try:
         account = request.user
     except Account.DoesNotExist:
-        return Response(status=status.http_404_not_found)
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'PUT':
         serializer = AccountProfileSerializer(account, data=request.data)
@@ -53,12 +53,14 @@ def profile_update_view(request):
             serializer.save()
             data['response'] = "Account updated successfully"
             return Response(data = data)
-        return Response(status=status.http_404_not_found)    
+        return Response(status=status.HTTP_404_NOT_FOUND)     
 
 @api_view(['DELETE',])
 def logout_view(request):
     if request.method == 'DELETE':
         request.user.auth_token.delete()
-        return Response(status=status.HTTP_200_OK)
+        return Response("Account Logout successfull")
+    return Response(status=status.HTTP_404_NOT_FOUND)  
+    
 
 
