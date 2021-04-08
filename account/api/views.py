@@ -3,6 +3,8 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.authtoken.models import Token
 from account.api.serializers import RegistrationSerializer, AccountProfileSerializer
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.views import APIView
+from rest_framework import status
 
 @api_view (['POST', ])
 def registration_view(request):
@@ -52,3 +54,10 @@ def profile_update_view(request):
             data['response'] = "Account updated successfully"
             return Response(data = data)
         return Response(status=status.http_404_not_found)    
+
+class logout_view(APIView):
+    def get(self, request, format=None):
+        # simply delete the token to force a login
+        request.user.auth_token.delete()
+        return Response(status=status.HTTP_200_OK)
+
