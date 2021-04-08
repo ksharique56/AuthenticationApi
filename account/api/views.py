@@ -55,9 +55,10 @@ def profile_update_view(request):
             return Response(data = data)
         return Response(status=status.http_404_not_found)    
 
-class logout_view(APIView):
-    def get(self, request, format=None):
-        # simply delete the token to force a login
+@api_view(['DELETE',])
+def logout_view(request):
+    if request.method == 'DELETE':
         request.user.auth_token.delete()
         return Response(status=status.HTTP_200_OK)
+
 
